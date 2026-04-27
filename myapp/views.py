@@ -31,14 +31,14 @@ def home(request):
             return redirect("home")
     else:
         form = TransactionForm(request_user=request.user)
-    total = User.objects.aggregate(t=Sum('balance'))['t']
+    total = 0 #User.objects.aggregate(t=Sum('balance'))['t']
     return render(request,"home.html",{"transaction_form": form, "total":total})
 
 @login_required
 def transactions(request):
     object_list = Transaction.objects.filter(
         Q(sender=request.user) | Q(receiver=request.user)
-    ).select_related("receiver", "sender").order_by("-created_at")    
+    ).select_related("receiver", "sender")#.order_by("-created_at")    
     paginator = Paginator(object_list, 5)
     page_number = request.GET.get('page')
     return render(request,"transactions.html",{"page_obj": paginator.get_page(page_number)})
