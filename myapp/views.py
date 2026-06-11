@@ -1,5 +1,5 @@
 from functools import wraps
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.db import transaction as db_transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -57,11 +57,20 @@ def home(request):
                 receiver.save(update_fields=["balance"])
                 txn = Transaction.objects.create(sender=sender, receiver=receiver, amount=amount, description=description)
             messages.success(request, f"Success! txnId:{txn.id}")
-            return redirect("home")
+            return redirect("pay_success", txn_id=txn.id)
     else:
         form = TransactionForm(request_user=request.user)
     total = 0 #User.objects.aggregate(t=Sum('balance'))['t']
     return render(request,"home.html",{"transaction_form": form, "total":total})
+
+@login_required
+def pay_success(request, txn_id):
+    txn = get_object_or_404(
+        Transaction.objects.select_related("receiver", "sender"),
+        Q(sender=request.user) | Q(receiver=request.user),
+        id=txn_id,
+    )
+    return render(request, "pay_success.html", {"txn": txn})
 
 @login_required
 @rate_limit(limit=LIMIT, window=WINDOW, prefix="rl:list_tx")

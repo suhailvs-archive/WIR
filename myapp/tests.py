@@ -40,6 +40,9 @@ class TransactionTest(TestCase):
         )
         
         # check suhail has -10$ balance
+        self.assertEqual(response.resolver_match.url_name, "pay_success")
+        self.assertContains(response, "Payment Successful")
+        self.assertContains(response, "Transaction #1")
         self.assertContains(response, "Welcome back, Suhail")
         self.assertContains(response, "$-10")
         response = self.client.get(reverse("transactions"))
