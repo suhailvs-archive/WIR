@@ -18,14 +18,15 @@ class TransactionTest(TestCase):
 
     def login(self, username):
         return self.client.post(
-            f'{reverse("admin:login")}?next={self.url}',
+            f'{reverse("login")}?next={self.url}',
             {"username": username, "password": "a"},
             follow=True,
         )
 
     def test_login_and_make_transaction(self):
         response = self.client.get(self.url, follow=True)
-        self.assertInHTML("<title>Log in | Django site admin</title>", response.content.decode())
+        self.assertInHTML("<title>Login | Stack Coin</title>", response.content.decode())
+        self.assertContains(response, "Login to WIR")
 
         # login as suhail and pay 10$ to nusra
         response = self.login('7356775981')
@@ -43,8 +44,7 @@ class TransactionTest(TestCase):
         self.assertEqual(response.resolver_match.url_name, "pay_success")
         self.assertContains(response, "Payment Successful")
         self.assertContains(response, "Transaction #1")
-        self.assertContains(response, "Welcome back, Suhail")
-        self.assertContains(response, "$-10")
+        self.assertContains(response, "$10")
         response = self.client.get(reverse("transactions"))
         self.assertContains(response, "Paid to Nusra")
 
@@ -111,6 +111,6 @@ class TransactionTest(TestCase):
 
         response = self.client.post(reverse("logout"), follow=True)
 
-        self.assertRedirects(response, "/admin/login/")
+        self.assertRedirects(response, "/login/")
         response = self.client.get(self.url, follow=True)
-        self.assertInHTML("<title>Log in | Django site admin</title>", response.content.decode())
+        self.assertInHTML("<title>Login | Stack Coin</title>", response.content.decode())

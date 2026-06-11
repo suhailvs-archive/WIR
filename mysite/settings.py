@@ -75,5 +75,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = "myapp.User"

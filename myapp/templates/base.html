@@ -40,14 +40,18 @@
       <nav class="navbar navbar-expand bg-white border-bottom">
         <div class="container py-2">
           <a class="navbar-brand d-flex align-items-center gap-2 mb-0 h1" href="{% url 'home' %}">
-            <span class="brand-mark">L</span>
-            <span>LETS</span>
+            <span class="brand-mark">W</span>
+            <span>WIR</span>
           </a>
           <div class="navbar-nav flex-row align-items-center gap-2">
-            <form method="post" action="{% url 'logout' %}" class="mb-0">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
-            </form>
+            {% if request.user.is_authenticated %}
+              <form method="post" action="{% url 'logout' %}" class="mb-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+              </form>
+            {% else %}
+              <a class="btn btn-sm btn-primary" href="{% url 'login' %}">Login</a>
+            {% endif %}
           </div>
         </div>
       </nav>
@@ -56,14 +60,16 @@
         <div class="row justify-content-center">
           <div class="col-xl-5 col-lg-6 col-md-8">
             {% bootstrap_messages %}
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" href="{% url 'home' %}">Pay</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'transactions' %}active fw-semibold{% endif %}" href="{% url 'transactions' %}">Transactions</a>
-              </li>
-            </ul><br>
+            {% if request.user.is_authenticated %}
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" href="{% url 'home' %}">Pay</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.resolver_match.url_name == 'transactions' %}active fw-semibold{% endif %}" href="{% url 'transactions' %}">Transactions</a>
+                </li>
+              </ul><br>
+            {% endif %}
             {% block content %}
             {% endblock %}
           </div>
