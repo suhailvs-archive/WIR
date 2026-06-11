@@ -105,3 +105,12 @@ class TransactionTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"first_name": "Nusra"})
+
+    def test_logout_redirects_to_login(self):
+        self.login('7356775981')
+
+        response = self.client.post(reverse("logout"), follow=True)
+
+        self.assertRedirects(response, "/admin/login/")
+        response = self.client.get(self.url, follow=True)
+        self.assertInHTML("<title>Log in | Django site admin</title>", response.content.decode())

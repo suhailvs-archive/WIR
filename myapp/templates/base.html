@@ -41,11 +41,15 @@
         <div class="container py-2">
           <a class="navbar-brand d-flex align-items-center gap-2 mb-0 h1" href="{% url 'home' %}">
             <span class="brand-mark">SC</span>
-            <span>Stack Coin</span>
+            <span>SC</span>
           </a>
-          <div class="navbar-nav flex-row gap-2">
+          <div class="navbar-nav flex-row align-items-center gap-2">
             <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" href="{% url 'home' %}">Pay</a>
-            <a class="nav-link {% if request.resolver_match.url_name == 'transactions' %}active fw-semibold{% endif %}" href="{% url 'transactions' %}">Transactions</a>
+            <a class="nav-link {% if request.resolver_match.url_name == 'transactions' %}active fw-semibold{% endif %}" href="{% url 'transactions' %}">Txns</a>
+            <form method="post" action="{% url 'logout' %}" class="mb-0">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+            </form>
           </div>
         </div>
       </nav>

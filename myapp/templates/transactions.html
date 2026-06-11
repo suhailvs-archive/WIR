@@ -23,9 +23,7 @@
             {% endif %}
           </p>
           {% if txn.description %}
-            <p class="mb-1 text-break">{{ txn.description }}</p>
-          {% else %}
-            <p class="mb-1 text-secondary">No description</p>
+            <p class="mb-1 text-break small">{{ txn.description }}</p>
           {% endif %}
           <p class="mb-0 text-secondary small">{{ txn.created_at|date:"M j, Y, g:i a" }}</p>
         </div>

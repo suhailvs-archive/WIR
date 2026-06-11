@@ -4,7 +4,8 @@ User = get_user_model()
 
 
 class TransactionForm(forms.Form):
-    receiver = forms.CharField(min_length=10,max_length=10,label="Send money to:")
+    receiver = forms.CharField(min_length=10,max_length=10,label='Send money to:', 
+                    widget=forms.TextInput(attrs={'placeholder': '10 digit mobile number'}))
     amount = forms.IntegerField(min_value=1)
     description = forms.CharField(required=False,max_length=50)    
 
