@@ -1,18 +1,24 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Pay | Stack Coin{% endblock %}
 
 {% block content %}
-<form method="post" action="."> {% csrf_token %}
-  <div class="card">
+<form method="post" action="." class="card border-0 shadow-sm">
+  {% csrf_token %}
     <div class="card-body">
-      <h5 class="card-title">Record Transaction</h5>
-      {{ transaction_form }}<br>
-      <div class="d-grid gap-2 col-6 mx-auto">
-        <button type="submit" id="payBtn" class="btn btn-primary" disabled>Pay</button>
+      <div class="mb-4">
+        <h2 class="h5 mb-1">Send Payment</h2>
+        <p class="text-secondary mb-0">Enter a 10 digit mobile number and transfer amount.</p>
+      </div>
+
+      {% bootstrap_form transaction_form %}
+
+      <div class="d-grid mt-4">
+        {% bootstrap_button button_type="submit" content="Pay" button_class="btn-primary" id="payBtn" %}
       </div>
     </div>
-  </div>
 </form>
-<hr/>
 
 {% endblock %}
 

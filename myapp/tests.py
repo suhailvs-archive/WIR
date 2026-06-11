@@ -30,7 +30,8 @@ class TransactionTest(TestCase):
         # login as suhail and pay 10$ to nusra
         response = self.login('7356775981')
 
-        self.assertInHTML('<h3 class="text-muted">Hi Suhail. Your balance: 0$</h3>', response.content.decode())
+        self.assertContains(response, "Welcome back, Suhail")
+        self.assertContains(response, "$0")
 
         response = self.client.post(
             self.url,
@@ -39,9 +40,10 @@ class TransactionTest(TestCase):
         )
         
         # check suhail has -10$ balance
-        self.assertInHTML('<h3 class="text-muted">Hi Suhail. Your balance: -10$</h3>', response.content.decode())
+        self.assertContains(response, "Welcome back, Suhail")
+        self.assertContains(response, "$-10")
         response = self.client.get(reverse("transactions"))
-        self.assertInHTML('<div class="fw-bold">Paid to Nusra</div>', response.content.decode())
+        self.assertContains(response, "Paid to Nusra")
 
         # prevent transaction to own account
         response = self.client.post(
@@ -49,14 +51,16 @@ class TransactionTest(TestCase):
             {"receiver": "7356775981", "amount": 10, "description": "caring"},
             follow=True,
         )
-        self.assertInHTML('<h3 class="text-muted">Hi Suhail. Your balance: -10$</h3>', response.content.decode())
+        self.assertContains(response, "Welcome back, Suhail")
+        self.assertContains(response, "$-10")
 
         
         # login as nusra. check she has 10$ balance
         response = self.login("8921513696")
-        self.assertInHTML('<h3 class="text-muted">Hi Nusra. Your balance: 10$</h3>', response.content.decode())
+        self.assertContains(response, "Welcome back, Nusra")
+        self.assertContains(response, "$10")
         response = self.client.get(reverse("transactions"))
-        self.assertInHTML('<div class="fw-bold">Received from Suhail</div>', response.content.decode())
+        self.assertContains(response, "Received from Suhail")
 
     def test_unknown_receiver_is_rejected_without_creating_transaction(self):
         self.login('7356775981')
