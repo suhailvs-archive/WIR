@@ -40,12 +40,10 @@
       <nav class="navbar navbar-expand bg-white border-bottom">
         <div class="container py-2">
           <a class="navbar-brand d-flex align-items-center gap-2 mb-0 h1" href="{% url 'home' %}">
-            <span class="brand-mark">SC</span>
-            <span>SC</span>
+            <span class="brand-mark">L</span>
+            <span>LETS</span>
           </a>
           <div class="navbar-nav flex-row align-items-center gap-2">
-            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" href="{% url 'home' %}">Pay</a>
-            <a class="nav-link {% if request.resolver_match.url_name == 'transactions' %}active fw-semibold{% endif %}" href="{% url 'transactions' %}">Txns</a>
             <form method="post" action="{% url 'logout' %}" class="mb-0">
               {% csrf_token %}
               <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
@@ -57,18 +55,15 @@
       <main class="container py-4 py-lg-5">
         <div class="row justify-content-center">
           <div class="col-xl-5 col-lg-6 col-md-8">
-            <section class="account-summary rounded-3 p-3 p-sm-4 mb-4">
-              <p class="text-secondary mb-1">Welcome back, {{ request.user.first_name }}</p>
-              <div class="d-flex align-items-end justify-content-between gap-3">
-                <div>
-                  <p class="text-secondary small text-uppercase mb-1">Available balance</p>
-                  <h1 class="h3 mb-0">${{ request.user.balance }}</h1>
-                </div>
-              </div>
-            </section>
-
             {% bootstrap_messages %}
-
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" href="{% url 'home' %}">Pay</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'transactions' %}active fw-semibold{% endif %}" href="{% url 'transactions' %}">Transactions</a>
+              </li>
+            </ul><br>
             {% block content %}
             {% endblock %}
           </div>

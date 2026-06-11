@@ -4,6 +4,17 @@
 {% block title %}Pay | Stack Coin{% endblock %}
 
 {% block content %}
+<section class="account-summary rounded-3 p-3 p-sm-4 mb-4">
+  <p class="text-secondary mb-1">Welcome back, {{ request.user.first_name }}</p>
+  
+  <div class="d-flex align-items-end justify-content-between gap-3">
+    <div>
+      <p class="text-secondary small">Credit Limit: <strong>${{ request.user.credit_limit }}</strong></p>
+      <p class="text-secondary small text-uppercase mb-1">Available balance</p>
+      <h1 class="h3 mb-0">${{ request.user.balance }}</h1>      
+    </div>
+  </div>
+</section>
 <form method="post" action="." class="card border-0 shadow-sm">
   {% csrf_token %}
     <div class="card-body">
