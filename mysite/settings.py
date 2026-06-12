@@ -16,6 +16,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_bootstrap5',
+    'axes',
+
     'myapp',
 ]
 
@@ -27,6 +29,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -78,3 +81,14 @@ STATIC_URL = 'static/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = "myapp.User"
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',  # must be first
+    'django.contrib.auth.backends.ModelBackend',  # default Django auth
+]
+AXES_LOCKOUT_PARAMETERS = ['username']
+
+AXES_FAILURE_LIMIT = 3          # attempts before lockout
+AXES_COOLOFF_TIME = 1            # unlock after 1 hour (or use timedelta(minutes=30))
+# AXES_RESET_ON_SUCCESS = True     # clear count on successful login
+AXES_ENABLE_ADMIN = True         # manage lockouts in Django admin
